@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<table>
+    <tr>
+      <th>No</th>
+      <th>Balance</th>
+      <th>Roll</th>
+      <th>RP</th>
+      <th>RPB</th>
+      <th>FBB</th>
+      <th>Recaptcha</th>
+      <th>Slow Withdraw</th>
+      <th>Instant Withdraw</th>
+      <th>BlockChain</th>
+    </tr>
+    {% for item in doc %}
+    <tr>
+      <td>{{item['_id']}}</td>
+      {% if item["RED"] %}
+      <td class="green">{{item['BTC']}}</td>
+      {% else %}
+      <td class="red">{{item['BTC']}}</td>
+      {% endif %}
+      {% if item['STATUS'] %}
+      <td class="green" >{{item['NROLL']}}</td>
+      {% else %}
+      <td class="red">{{item['TIME']}}</td>
+      {% endif %}
+      <td>{{item['RP']}}</td>
+      {% if item['RPB'] %}
+          {% if item['RTODAY'] %}
+          <td class="green">{{item['NRPB']}}</td>
+          {% else %}
+          <td class="blue">{{item['NRPB']}}</td>
+          {% endif %}
+      {% else %}
+      <td class="red">Inactive</td>
+      {% endif %}
+      {% if item['FBB'] %}
+          {% if item['FTODAY'] %}
+          <td class="green">{{item['NFBB']}}</td>
+          {% else %}
+          <td class="blue">{{item['NFBB']}}</td>
+          {% endif %}
+      {% else %}
+      <td class="red">Inactive</td>
+      {% endif %}
+      {% if item['RV2'] %}
+      <td class="red">Used</td>
+      {% else %}
+      <td class="green">Not Used</td>
+      {% endif %}
+      <td>
+        <form action="/withdraw" method="post">
+          <input type = "hidden" name = "speed" value='slow' display: none>
+          <input type = "hidden" name='csrf_token' value = "{{ item['csrf_token'] }}" display: none>
+          <input type = "hidden" name='id' value = "{{ item['_id'] }}" display: none>
+          <input type = "hidden" name='fee' value = "{{ item['SLOW'] }}" display: none>
+          <input type = "hidden" name='btc' value = "{{ item['BTC'] }}" display: none>
+          <input type = "text" name = "amount" value="0.00030000" size='8'>
+          <input type = "hidden" name = "withdraw_address" value="{{ item['WITHDRAW'] }}" display: none>
+          <br><input type = "submit" value = "{{item['SLOW']}}" onclick="return confirm('Do you want to withdraw from {{ item['_id'] }}')"></form>
+      </td>
+      <td>
+        <form action="/withdraw" method="post" id = "{{item['_id']}}">
+          <input type = "hidden" name = "speed" value='instant' display: none>
+        <button type="submit" form = "{{item['_id']}}" value="{{item['_id']}}" name="account">{{item['INSTANT']}}</button>
+        </form>
+      </td>
+      <td><a href="https://www.blockchain.com/btc/address/{{ item['WITHDRAW'] }} " target="_blank">View</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+<br><br><br><br>
+  <table width: 100%>
+    <tr>
+      <th>Total</th>
+      <th>Redeemable [S]</th>
+      <th>Redeemable [I]</th>
+      <th>Slow Withdraw All</th>
+      <th>Instant Withdraw All</th>
+    </tr>
+    <tr>
+      <td>{{total}}</td>
+      <td>{{slowredeemable}}</td>
+      <td>{{instantredeemable}}</td>
+      <td>
+        <form action="/withdraw" method="POST">
+        <button type="submit" value="SLOW-WITHDRAW" name="account" csrf_token="4" >Slow Withdraw</button>
+        </form>
+      </td>
+      <td>
+        <form action="/withdraw" method="POST">
+        <button type="submit" value="INSTANT-WITHDRAW" name="account">Instant Withdraw</button>
+        </form>
+      </td>
+    </tr>
+    <tr>
+        <td>₹ {{totalprice}}</td>
+        <td>₹ {{slowprice}}</td>
+        <td>₹ {{instantprice}}</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+{% endblock %}
+

@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <meta charcet="utf-8">
+        <title>HatrixBTC</title>
+        <style>
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100px;
+              font-weight: bold;
+            }
+
+            table td.red {
+              color:red
+            }
+
+            table td.green {
+                color: green
+            }
+
+            table td.blue {
+                color: blue;
+            }
+            
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: center;
+              padding: 6px;
+              white-space:nowrap;
+              width: 50%;
+              vertical-align: middle;
+            }
+            
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+
+            .button {
+            display: inline-block;
+            border-radius: 8px;
+            background-color:blue;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 14px;
+            padding: 8px;
+            width: 100px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+            }
+
+            .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+            }
+
+            .button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+            }
+
+            .button:hover span {
+            padding-right: 25px;
+            }
+
+            .button:hover span:after {
+            opacity: 1;
+            right: 0;
+            }
+            </style>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>
